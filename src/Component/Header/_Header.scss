@@ -1,0 +1,78 @@
+.header__section {
+  .header__logo {
+    h1 {
+      font-size: 2rem;
+    }
+  }
+  .header__nav__login {
+    .header__nav {
+      .course {
+        .list {
+          visibility: hidden;
+          transition: opacity 0.3s ease-in-out,
+            transform 0.3s ease-in-out;
+          ul {
+            li {
+            }
+          }
+        }
+        &:hover .list {
+          visibility: visible;
+        }
+        &:not(:hover) .list {
+          visibility: hidden;
+          opacity: 0;
+          transition: visibility 0.3s, opacity 0.3s ease-in-out;
+        }
+      }
+    }
+    .header__user {
+      height: 0;
+
+      .header__user__edit {
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out,
+          transform 0.3s ease-in-out;
+      }
+      &:hover .header__user__edit {
+        visibility: visible;
+      }
+      &:not(:hover) .header__user__edit {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0.3s, opacity 0.3s ease-in-out;
+      }
+    }
+
+    .header__nav__mobile {
+      i {
+        @media screen and (max-width: 965px) {
+          display: block;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+//config for ant design
+.nav__mobile {
+  .user__login {
+    span {
+      text-align: center;
+    }
+    .ant-collapse {
+      border: none !important;
+      background: none !important;
+    }
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
