@@ -1,0 +1,32 @@
+.course__list__section {
+  .course__list__title {
+  }
+  .course__list__info {
+    .course {
+      .item {
+        width: calc(90% / 4);
+        @media screen and (max-width: 1025px) {
+          width: calc(90% / 3);
+        }
+        @media screen and (max-width: 769px) {
+          width: calc(90% / 2);
+        }
+        @media screen and (max-width: 601px) {
+          width: 100%;
+        }
+
+        .content {
+          transform: translateY(0);
+          transition: all 0.5s ease-in-out;
+          &:hover {
+            transform: translateY(-10px);
+          }
+          .course__image {
+          }
+          .course__info {
+          }
+        }
+      }
+    }
+  }
+}

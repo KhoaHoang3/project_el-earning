@@ -1,0 +1,87 @@
+.carousel__section {
+  .carousel__background {
+    background-image: url('../../assets/img/background4.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.35;
+    height: 1200px;
+    @media screen and (max-width: 1675.5px) {
+      height: 954px;
+    }
+    @media screen and (max-width: 1315.5px) {
+      height: 910px;
+    }
+    @media screen and (max-width: 1024.5px) {
+      height: 848px;
+    }
+  }
+  .carousel__introduction {
+    @media screen and (max-width: 1024.5px) {
+      left: -30px;
+      padding: 0 20px;
+    }
+    .introduction {
+      @media screen and (max-width: 1675.5px) {
+        // margin-left: 20px;
+      }
+
+      h1 {
+        @media screen and (max-width: 1675.5px) {
+          font-size: 1.5rem;
+        }
+        @media screen and (max-width: 1151.5px) {
+          font-size: 1.2rem;
+        }
+      }
+      p {
+        @media screen and (max-width: 1675.5px) {
+          font-size: 1.5rem;
+        }
+        @media screen and (max-width: 1151.5px) {
+          font-size: 1.2rem;
+        }
+      }
+    }
+    .image {
+      @media screen and (max-width: 1315.5px) {
+      }
+      img {
+        @media screen and (max-width: 1675.5px) {
+          height: 800px;
+        }
+        @media screen and (max-width: 1315.5px) {
+          height: 750px;
+        }
+        @media screen and (max-width: 1151.5px) {
+          height: 750px;
+        }
+        @media screen and (max-width: 1024.5px) {
+          height: 698px;
+        }
+        @media screen and (max-width: 940.5px) {
+          height: 518px;
+        }
+
+        @media screen and (max-width: 743.5px) {
+          height: 488px;
+        }
+        @media screen and (max-width: 600.5px) {
+          height: 458px;
+        }
+        @media screen and (max-width: 526.5px) {
+          height: 428px;
+        }
+        @media screen and (max-width: 414.5px) {
+          height: 336px;
+        }
+        @media screen and (max-width: 376px) {
+          height: 307px;
+        }
+        @media screen and (max-width: 321px) {
+          height: 248px;
+        }
+      }
+    }
+  }
+}

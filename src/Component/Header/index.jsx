@@ -38,7 +38,7 @@ function Header() {
   const renderUI = () => {
     if (localStorage.getItem(ACCESSTOKEN)) {
       return (
-        <div className="header__user  pr-[5px] relative hidden 965screen:flex leading-leading-more-loose text-1.2 font-semibold">
+        <div className="header__user  pr-[5px] relative hidden 965screen:flex leading-leading-more-loose text-1.2 font-semibold decoration-pink-600">
           <span className="pr-2 relative bottom-1">
             <Avatar src={`https://joeschmoe.io/api/v1/${hoTen}`} />
           </span>
@@ -46,7 +46,7 @@ function Header() {
             {hoTen}
             <i className="fa-solid fa-caret-down pl-2"></i>
             <div className="header__user__edit absolute left-0 w-[250px]">
-              <ul className="divide-y">
+              <ul className="divide-y-[2px] bg-white shadow-xl shadow-sky-200">
                 <li className="hover:bg-sky-300 px-5">
                   Cập nhật thông tin
                 </li>
@@ -187,7 +187,7 @@ function Header() {
             KHÓA HỌC
             <i className="fa-solid fa-caret-down pl-2"></i>
             <div className="list">
-              <ul className="absolute bg-white text-black w-[300px] text-center divide-y left-[-94px] z-50">
+              <ul className="absolute shadow-xl shadow-sky-200 bg-white text-black w-[300px] text-center divide-y-[2px] left-[-94px] z-50">
                 {courseList.map((item, index) => {
                   return (
                     <li

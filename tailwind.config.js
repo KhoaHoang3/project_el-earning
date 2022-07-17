@@ -4,10 +4,14 @@ module.exports = {
   theme: {
     screens: {
       '400screen': '400px',
+      '767screen': '767px',
+      '890screen': '890px',
       '936screen': '936px',
       '948screen': '948px',
       '965screen': '965px',
       '1024screen': '1024px',
+      '1315screen': '1315px',
+      '1367screen': '1367px',
     },
     lineHeight: {
       'leading-more-loose': '3',

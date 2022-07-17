@@ -3,6 +3,7 @@ import {
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import getCourseListSlice from './reducers/getCourseListSlice';
+import getCourseSlice from './reducers/getCourseSlice';
 import userLoginSlice from './reducers/userLoginSlice';
 import userRegisterSlice from './reducers/userRegisterSlice';
 
@@ -15,5 +16,6 @@ export const store = configureStore({
     userRegister: userRegisterSlice,
     userLogin: userLoginSlice,
     getCourseList: getCourseListSlice,
+    getCourse: getCourseSlice,
   },
 });

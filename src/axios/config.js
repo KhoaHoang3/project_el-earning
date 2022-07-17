@@ -6,7 +6,7 @@ export const DOMAIN = 'https://elearningnew.cybersoft.edu.vn/api';
 export const USER_LOGIN = 'userLogin';
 export const ACCESSTOKEN = 'accessToken';
 export const USERINFO = 'userInfo';
-export const maNhom = 'GP01';
+export const maNhom = 'GP09';
 const userData =
   JSON.parse(JSON.stringify(localStorage.getItem(ACCESSTOKEN))) || {};
 
