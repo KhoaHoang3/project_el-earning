@@ -1,5 +1,6 @@
 import {
   ACCESSTOKEN,
+  COURSE,
   http,
   maNhom,
   USERINFO,
@@ -7,6 +8,7 @@ import {
 import {
   getCourseListURL,
   getCourseURL,
+  getListBaseOnCourseURL,
   loginURL,
   registerURL,
 } from '../../axios/apiURL';
@@ -15,6 +17,7 @@ import { toast } from 'react-toastify';
 import { userLoginData } from '../reducers/userLoginSlice';
 import { getCourseList } from '../reducers/getCourseListSlice';
 import { getCourse } from '../reducers/getCourseSlice';
+import { courseBaseOnCode } from '../reducers/CourseSlice';
 
 export const userRegisterAction = (userData, maNhom, navigate) => {
   return async (dispatch) => {
@@ -87,6 +90,25 @@ export const getCourseAction = () => {
       );
       const action = getCourse(result.data);
       dispatch(action);
+    } catch (error) {
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    }
+  };
+};
+
+// get list base on course
+export const getListBaseOnCourseAction = (course, maNhom) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.get(
+        `${getListBaseOnCourseURL}?maDanhMuc=${course}&MaNhom=${maNhom}`
+      );
+      console.log(result);
+      dispatch(courseBaseOnCode(result.data));
+      localStorage.setItem(COURSE, JSON.stringify(result.data));
     } catch (error) {
       toast.error(error.response.data, {
         position: 'top-center',

@@ -14,7 +14,6 @@ const userLoginSlice = createSlice({
       const { payload } = action;
       const { accessToken } = payload;
       state.userData = payload;
-      console.log('userInfo', payload);
       localStorage.setItem(ACCESSTOKEN, accessToken);
     },
   },

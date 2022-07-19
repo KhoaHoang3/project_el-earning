@@ -7,20 +7,19 @@ import { NavLink } from 'react-router-dom';
 function CourseList() {
   const dispatch = useDispatch();
   const { course } = useSelector(getCourse);
-  console.log('course', course);
   useEffect(() => {
     const action = getCourseAction();
     dispatch(action);
   }, [dispatch]);
   return (
-    <div className="course__list__section w-[90%] mx-auto">
+    <div className="course__list__section w-[100%] 1024screen:w-[90%] mx-auto">
       <div className="course__list__title animate__animated animate__slideInUp wow slideInUp border-b-4 border-sky-500">
         <h1 className="text-center text-1.5 ">
-          CÁC KHOA HỌC MỚI NHẤT
+          CÁC KHÓA HỌC MỚI NHẤT
         </h1>
       </div>
       <div
-        data-wow-delay="0.8s"
+        data-wow-delay="0.5s"
         className="course__list__info animate__animated animate__zoomIn wow zoomIn"
       >
         <div className="course  flex flex-wrap justify-center align-middle">

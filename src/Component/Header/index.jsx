@@ -5,12 +5,17 @@ import { DownOutlined } from '@ant-design/icons';
 import { Button, Drawer } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  getCourseCode,
   getCourseList,
   getUserLoginData,
 } from '../../redux/selectors';
 import { Avatar, Collapse } from 'antd';
-import { getCourseListAction } from '../../redux/thunk/actions';
-import { ACCESSTOKEN, USERINFO } from '../../axios/config';
+import {
+  getCourseListAction,
+  getListBaseOnCourseAction,
+} from '../../redux/thunk/actions';
+import { ACCESSTOKEN, maNhom, USERINFO } from '../../axios/config';
+import { getCourseCodePage } from '../../redux/reducers/getCourseCode';
 const { Panel } = Collapse;
 
 function Header() {
@@ -92,7 +97,7 @@ function Header() {
                         src={`https://joeschmoe.io/api/v1/${hoTen}`}
                       />
                     </span>
-                    <span className=" relative left-[35px] inline-block pr-2 mr-2 text-black transition-all font-semibold text-1.2">
+                    <span className=" relative  left-[6px] 321screen:left-[35px] inline-block pr-2 mr-2 text-black transition-all font-semibold text-1.2">
                       {hoTen}
                     </span>
                   </div>
@@ -106,17 +111,34 @@ function Header() {
             </Collapse>
           </div>
           <a
-            className="mt-[1.2rem] text-1.2 text-black font-medium hover:text-sky-400 transition-all"
+            className="mt-[1.2rem] mb-[1.2rem] text-1.2 text-black font-medium hover:text-sky-400 transition-all"
             href=""
           >
             TRANG CHỦ
           </a>
-          <a
-            className=" mt-[1.2rem] text-1.2 text-black font-medium hover:text-sky-400 transition-all"
-            href=""
-          >
-            KHÓA HỌC
-          </a>
+          <Collapse defaultActiveKey={['1']}>
+            <Panel
+              header={
+                <div className="">
+                  <span className=" text-center relative  left-[36px] 321screen:left-[72px] text-black transition-all font-semibold text-1.2 hover:text-sky-400 ">
+                    KHÓA HỌC
+                  </span>
+                </div>
+              }
+              key="1"
+            >
+              {courseList.map((item, index) => {
+                return (
+                  <h1
+                    key={index}
+                    className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5"
+                  >
+                    {item.tenDanhMuc}
+                  </h1>
+                );
+              })}
+            </Panel>
+          </Collapse>
           <a
             className="mb-[1.2rem] mt-[1.2rem] text-1.2 text-black font-medium  hover:text-sky-400 transition-all"
             href=""
@@ -187,15 +209,25 @@ function Header() {
             KHÓA HỌC
             <i className="fa-solid fa-caret-down pl-2"></i>
             <div className="list">
-              <ul className="absolute shadow-xl shadow-sky-200 bg-white text-black w-[300px] text-center divide-y-[2px] left-[-94px] z-50">
+              <ul className="absolute shadow-xl shadow-sky-200 bg-white text-black w-[300px] text-center  left-[-94px] z-50">
                 {courseList.map((item, index) => {
                   return (
-                    <li
-                      className="hover:bg-sky-200 duration-75 transition-colors"
+                    <NavLink
+                      onClick={() => {
+                        const action = getListBaseOnCourseAction(
+                          item.maDanhMuc,
+                          maNhom
+                        );
+                        dispatch(action);
+                        dispatch(getCourseCodePage(item.maDanhMuc));
+                      }}
                       key={index}
+                      to={`/course/${item.maDanhMuc}`}
                     >
-                      {item.tenDanhMuc}
-                    </li>
+                      <li className="divide-y-[3px] hover:bg-sky-200 text-black duration-75 transition-colors">
+                        {item.tenDanhMuc}
+                      </li>
+                    </NavLink>
                   );
                 })}
               </ul>

@@ -1,17 +1,14 @@
 import React, { memo, useEffect } from 'react';
 import { Select, Form } from 'antd';
-import WOW from 'wowjs';
 const { Option } = Select;
 
 function FindCourse() {
-  useEffect(() => {
-    new WOW.WOW().init();
-  }, []);
   const onChange = (value) => {
     console.log(`selected ${value}`);
   };
+
   return (
-    <div className="find__course__section animate__animated wow animate__slideInUp flex flex-col w-[90%] 1367screen:w-[75%] 1367screen:flex-row justify-center align-middle mx-auto 890screen:mx-auto">
+    <div className="find__course__section animate__animated animate__slideInUp wow slideInUp flex flex-col w-[90%] 1367screen:w-[75%] 1367screen:flex-row justify-center align-middle mx-auto 890screen:mx-auto">
       <div className="find__course__intro w-[100%] mx-auto 1367screen:mr-[150px] ">
         <h1 className="text-1.5 text-center 1367screen:text-left">
           CHÀO MỪNG BẠN ĐẾN VỚI E-LEARNING

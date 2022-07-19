@@ -1,0 +1,107 @@
+.footer__section {
+  @media screen and (max-width: 1025px) {
+    min-height: 46vh;
+  }
+  @media screen and (max-height: 769px) {
+    min-height: 80vh;
+  }
+  @media screen and (max-width: 813px) {
+    min-height: 156vh;
+  }
+
+  @media screen and (max-width: 801px) {
+    min-height: 100vh;
+  }
+
+  @media screen and (max-width: 769px) {
+    min-height: 60vh;
+  }
+  @media screen and (max-width: 737px) {
+    min-height: 142vh;
+  }
+  @media screen and (max-width: 668px) {
+    min-height: 166vh;
+  }
+  @media screen and (max-width: 601px) {
+    min-height: 80vh;
+  }
+  @media screen and (max-width: 415px) {
+    min-height: 90vh;
+  }
+  @media screen and (max-width: 376px) {
+    min-height: 110vh;
+  }
+  @media screen and (max-width: 321px) {
+    min-height: 90vh;
+  }
+  div {
+    @media screen and (max-width: 1367px) {
+      left: 128px;
+    }
+    @media screen and (max-width: 1025px) {
+      left: 92px;
+    }
+    @media screen and (max-width: 769px) {
+      left: 78px;
+    }
+
+    @media screen and (max-width: 601px) {
+      left: 56px;
+    }
+    @media screen and (max-width: 415px) {
+      width: 85%;
+    }
+    @media screen and (max-width: 376px) {
+      width: 83%;
+    }
+    @media screen and (max-width: 321px) {
+      width: 80%;
+    }
+    h1 {
+      @media screen and (max-width: 321px) {
+        font-size: 1rem;
+      }
+    }
+    li {
+      @media screen and (max-width: 321px) {
+        font-size: 1rem;
+      }
+    }
+
+    .footer__title {
+    }
+    .footer__course {
+    }
+    .footer__contact {
+      input {
+        @media screen and (max-width: 321px) {
+          margin-left: 50px;
+        }
+      }
+      button {
+        @media screen and (max-width: 1025px) {
+          right: 138px;
+        }
+        @media screen and (max-width: 601px) {
+          right: 10px;
+        }
+        @media screen and (max-width: 415px) {
+          right: -76px;
+        }
+        @media screen and (max-width: 376px) {
+          right: -88px;
+        }
+        @media screen and (max-width: 321px) {
+          right: -102px;
+        }
+      }
+    }
+  }
+}
+
+//for ant design
+.ant-drawer-content-wrapper {
+  @media screen and (max-width: 321px) {
+    width: 320px !important;
+  }
+}

@@ -7,6 +7,7 @@ export const USER_LOGIN = 'userLogin';
 export const ACCESSTOKEN = 'accessToken';
 export const USERINFO = 'userInfo';
 export const maNhom = 'GP09';
+export const COURSE = 'course';
 const userData =
   JSON.parse(JSON.stringify(localStorage.getItem(ACCESSTOKEN))) || {};
 

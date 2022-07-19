@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Carousel from '../../Component/Carousel';
 import CourseList from '../../Component/CourseList';
 import FindCourse from '../../Component/FindCourse';
+import Footer from '../../Component/Footer';
 import Header from '../../Component/Header';
 
 export default function Homescreen() {
@@ -21,6 +22,10 @@ export default function Homescreen() {
 
       <section className="courseList">
         <CourseList />
+      </section>
+
+      <section className="footer">
+        <Footer />
       </section>
     </>
   );
