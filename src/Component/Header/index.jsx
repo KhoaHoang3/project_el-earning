@@ -15,7 +15,10 @@ import {
   getListBaseOnCourseAction,
 } from '../../redux/thunk/actions';
 import { ACCESSTOKEN, maNhom, USERINFO } from '../../axios/config';
-import { getCourseCodePage } from '../../redux/reducers/getCourseCode';
+import {
+  getCourseCodePage,
+  getCourseName,
+} from '../../redux/reducers/getCourseCode';
 const { Panel } = Collapse;
 
 function Header() {
@@ -50,7 +53,7 @@ function Header() {
           <span className="inline-block pr-2 mr-2 text-black transition-all cursor-pointer">
             {hoTen}
             <i className="fa-solid fa-caret-down pl-2"></i>
-            <div className="header__user__edit absolute left-0 w-[250px]">
+            <div className="header__user__edit absolute left-[-144px] w-[250px]">
               <ul className="divide-y-[2px] bg-white shadow-xl shadow-sky-200">
                 <li className="hover:bg-sky-300 px-5">
                   Cập nhật thông tin
@@ -129,12 +132,23 @@ function Header() {
             >
               {courseList.map((item, index) => {
                 return (
-                  <h1
+                  <NavLink
+                    onClick={() => {
+                      const action = getListBaseOnCourseAction(
+                        item.maDanhMuc,
+                        maNhom
+                      );
+                      dispatch(action);
+                      dispatch(getCourseCodePage(item.maDanhMuc));
+                      dispatch(getCourseName(item.tenDanhMuc));
+                    }}
                     key={index}
-                    className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5"
+                    to={`/course/${item.maDanhMuc}`}
                   >
-                    {item.tenDanhMuc}
-                  </h1>
+                    <h1 className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5">
+                      {item.tenDanhMuc}
+                    </h1>
+                  </NavLink>
                 );
               })}
             </Panel>
@@ -155,19 +169,47 @@ function Header() {
       return (
         <div className="nav__mobile flex flex-col text-center relative">
           <a
-            className="text-1.2 text-black font-medium hover:text-sky-400 transition-all"
-            href=""
+            className="text-1.2 mb-[0.5rem] text-black font-medium hover:text-sky-400 transition-all"
+            href="/"
           >
             TRANG CHỦ
           </a>
+          <Collapse defaultActiveKey={['1']}>
+            <Panel
+              header={
+                <div className="">
+                  <span className=" text-center relative  left-[36px] 321screen:left-[72px] text-black transition-all font-semibold text-1.2 hover:text-sky-400 ">
+                    KHÓA HỌC
+                  </span>
+                </div>
+              }
+              key="1"
+            >
+              {courseList.map((item, index) => {
+                return (
+                  <NavLink
+                    onClick={() => {
+                      const action = getListBaseOnCourseAction(
+                        item.maDanhMuc,
+                        maNhom
+                      );
+                      dispatch(action);
+                      dispatch(getCourseCodePage(item.maDanhMuc));
+                      dispatch(getCourseName(item.tenDanhMuc));
+                    }}
+                    key={index}
+                    to={`/course/${item.maDanhMuc}`}
+                  >
+                    <h1 className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5">
+                      {item.tenDanhMuc}
+                    </h1>
+                  </NavLink>
+                );
+              })}
+            </Panel>
+          </Collapse>
           <a
-            className=" mt-[1.2rem] text-1.2 text-black font-medium hover:text-sky-400 transition-all"
-            href=""
-          >
-            KHÓA HỌC
-          </a>
-          <a
-            className="mb-[1.2rem] mt-[1.2rem] text-1.2 text-black font-medium  hover:text-sky-400 transition-all"
+            className="mb-[1.2rem] mt-[0.5rem] text-1.2 text-black font-medium  hover:text-sky-400 transition-all"
             href=""
           >
             LIÊN HỆ
@@ -220,6 +262,7 @@ function Header() {
                         );
                         dispatch(action);
                         dispatch(getCourseCodePage(item.maDanhMuc));
+                        dispatch(getCourseName(item.tenDanhMuc));
                       }}
                       key={index}
                       to={`/course/${item.maDanhMuc}`}

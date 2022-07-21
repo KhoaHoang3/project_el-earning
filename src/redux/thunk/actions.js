@@ -108,7 +108,7 @@ export const getListBaseOnCourseAction = (course, maNhom) => {
       );
       console.log(result);
       dispatch(courseBaseOnCode(result.data));
-      localStorage.setItem(COURSE, JSON.stringify(result.data));
+      // localStorage.setItem(COURSE, JSON.stringify(result.data));
     } catch (error) {
       toast.error(error.response.data, {
         position: 'top-center',

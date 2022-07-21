@@ -2,6 +2,8 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
+import CourseDetailSlice from './reducers/CourseDetailSlice';
+import CourseSlice from './reducers/CourseSlice';
 import getCourseCode from './reducers/getCourseCode';
 import getCourseListSlice from './reducers/getCourseListSlice';
 import getCourseSlice from './reducers/getCourseSlice';
@@ -19,5 +21,7 @@ export const store = configureStore({
     getCourseList: getCourseListSlice,
     getCourse: getCourseSlice,
     courseCode: getCourseCode,
+    course: CourseSlice,
+    courseDetail: CourseDetailSlice,
   },
 });

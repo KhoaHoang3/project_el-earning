@@ -3,6 +3,7 @@ import { getCourseAction } from '../../redux/thunk/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourse } from '../../redux/selectors';
 import { NavLink } from 'react-router-dom';
+import { getCourseDetail } from '../../redux/reducers/CourseDetailSlice';
 
 function CourseList() {
   const dispatch = useDispatch();
@@ -39,8 +40,14 @@ function CourseList() {
                     <p className="text-1.2">
                       Lượt xem: {item.luotXem}
                     </p>
-                    <NavLink to="/">
-                      <span className="cursor-pointer text-1.2 text-black hover:text-sky-400">
+                    <NavLink to={`/course-detail/${item.biDanh}`}>
+                      <span
+                        onClick={() => {
+                          console.log(item);
+                          dispatch(getCourseDetail(item));
+                        }}
+                        className="cursor-pointer text-1.2 text-black hover:text-sky-400"
+                      >
                         Xem chi tiết
                         <i className="fa-solid fa-arrow-right pl-2"></i>
                       </span>

@@ -7,6 +7,7 @@ import Register from './page/Register';
 import Login from './page/Login';
 import Course from './page/Course';
 import { WOW } from 'wowjs';
+import CourseDetail from './page/CourseDetail';
 
 function App() {
   var wow = new WOW({
@@ -19,7 +20,12 @@ function App() {
         <Route exact path="/" element={<Homescreen />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/course/:id" element={<Course />} />
+        <Route exact path="/course/:id" element={<Course />}></Route>
+        <Route
+          exact
+          path="/course-detail/:id"
+          element={<CourseDetail />}
+        />
       </Routes>
       <ToastContainer />
     </div>

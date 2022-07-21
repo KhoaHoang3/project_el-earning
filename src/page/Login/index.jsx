@@ -67,7 +67,7 @@ export default function Login() {
         <div className="bg-slate-700 opacity-50 min-h-screen"></div>
         <div className="login__section">
           {/* IMAGE */}
-          <div className="login__section__image  absolute top-[28%] left-[48%] translate-x-[-50%] translate-y-[-50%]">
+          <div className="login__section__image  absolute top-[34%] left-[48%] translate-x-[-50%] translate-y-[-50%]">
             <img
               className="animate__animated animate__fadeInUp"
               src={`${student}`}

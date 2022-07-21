@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { courseInfo } from '../../_core/models/courseInfo';
-
+let saveCourse = [];
+if (sessionStorage.getItem('COURSE')) {
+  saveCourse = JSON.parse(sessionStorage.getItem('COURSE'));
+}
 const initialState = {
-  course: new courseInfo(),
+  course: saveCourse,
 };
 
 const CourseSlice = createSlice({
@@ -12,6 +15,7 @@ const CourseSlice = createSlice({
     courseBaseOnCode: (state, action) => {
       const { payload } = action;
       state.course = payload;
+      sessionStorage.setItem('COURSE', JSON.stringify(payload));
     },
   },
 });

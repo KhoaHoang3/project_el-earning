@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../../Component/Footer';
 import Header from '../../Component/Header';
 import {
@@ -6,7 +6,7 @@ import {
   MessageOutlined,
   StarOutlined,
 } from '@ant-design/icons';
-import { Avatar, List, Space } from 'antd';
+import { Avatar, List, Space, Breadcrumb } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   courseBaseOnCode,
@@ -14,12 +14,17 @@ import {
 } from '../../redux/selectors';
 import { getListBaseOnCourseAction } from '../../redux/thunk/actions';
 import { COURSE, maNhom } from '../../axios/config';
+import { NavLink } from 'react-router-dom';
+import { getCourseDetail } from '../../redux/reducers/CourseDetailSlice';
 
 export default function Course() {
   const dispatch = useDispatch();
-  const course = JSON.parse(localStorage.getItem(COURSE));
+
+  // use for render UI
+  const { course } = useSelector(courseBaseOnCode);
   const { courseCode } = useSelector(getCourseCode);
-  console.log('code', courseCode);
+  const { courseName } = useSelector(getCourseCode); // use for breadcrumb
+
   const data = course.map((item) => ({
     key: `${item.maKhoaHoc}`,
     image: (
@@ -34,13 +39,19 @@ export default function Course() {
     description: (
       <h1 className="text-1.2">Người xem: {item.luotXem}</h1>
     ),
-    content: <p className="text-1">{item.moTa}</p>,
-  }));
+    content: (
+      <div>
+        <p className="text-1">
+          <span className="font-semibold">Mô tả khóa học:</span>{' '}
+          {item.moTa}
+        </p>
 
-  useEffect(() => {
-    const action = getListBaseOnCourseAction(courseCode, maNhom);
-    dispatch(action);
-  }, [dispatch, courseCode]);
+        <button className="bg-sky-400 text-white font-semibold py-[5px] px-[10px] rounded-md">
+          Đăng ký khóa học{' '}
+        </button>
+      </div>
+    ),
+  }));
 
   return (
     <>
@@ -48,8 +59,19 @@ export default function Course() {
         <Header />
       </section>
 
-      <section className="course__info min-h-screen pt-[9rem] w-[90%] mx-auto">
-        <div className="bg-white p-[30px] rounded-md shadow-lg shadow-sky-200">
+      <section className="course__info min-h-[105vh] pt-[9rem] w-[90%] mx-auto animate__animated animate__zoomIn">
+        <div className="">
+          <Breadcrumb>
+            <Breadcrumb.Item className="text-1.2">
+              Khóa học
+            </Breadcrumb.Item>
+
+            <Breadcrumb.Item className="text-1.2">
+              {courseName}
+            </Breadcrumb.Item>
+          </Breadcrumb>
+        </div>
+        <div className="bg-white p-[10px] rounded-md shadow-lg shadow-sky-200">
           <List
             itemLayout="vertical"
             size="large"
