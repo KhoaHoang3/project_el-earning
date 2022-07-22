@@ -7,12 +7,14 @@ import {
 } from '../../axios/config';
 import {
   assignCourseURL,
+  cancelCourseURL,
   getAccountInfoURL,
   getCourseListURL,
   getCourseURL,
   getListBaseOnCourseURL,
   loginURL,
   registerURL,
+  userUpdateInfoURL,
 } from '../../axios/apiURL';
 import { userRegister } from '../reducers/userRegisterSlice';
 import { toast } from 'react-toastify';
@@ -111,12 +113,7 @@ export const getListBaseOnCourseAction = (course, maNhom) => {
       );
       dispatch(courseBaseOnCode(result.data));
       // localStorage.setItem(COURSE, JSON.stringify(result.data));
-    } catch (error) {
-      toast.error(error.response.data, {
-        position: 'top-center',
-        autoClose: 1000,
-      });
-    }
+    } catch (error) {}
   };
 };
 
@@ -127,11 +124,6 @@ export const assignCourseAction = (info, biDanh) => {
       const result = await http.post(assignCourseURL, info);
 
       await dispatch(getListBaseOnCourseAction(biDanh, maNhom));
-
-      toast.success('Đăng ký khóa học thành công', {
-        position: 'top-center',
-        autoClose: 1000,
-      });
     } catch (error) {
       toast.error(error.response.data, {
         position: 'top-center',
@@ -148,5 +140,41 @@ export const getAccountInfoAction = () => {
       const result = await http.post(getAccountInfoURL);
       dispatch(getUserAccountInfo(result.data));
     } catch (error) {}
+  };
+};
+
+// user update infomation
+export const userUpdateInfoAction = (info) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.put(userUpdateInfoURL, info);
+      console.log(result);
+      toast.success(
+        'Cập nhật thông tin thành công, đăng nhập lại để thấy sự thay đổi',
+        {
+          position: 'top-center',
+          autoClose: 2000,
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const cancelCourseAction = (courseCode) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.delete(
+        `${cancelCourseURL}?MaKhoaHoc=${courseCode}`
+      );
+      console.log(result);
+      toast.success('Xóa khóa học thành công', {
+        position: 'top-center',
+        autoClose: 1500,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };

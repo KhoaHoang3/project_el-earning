@@ -35,15 +35,13 @@ export default function Course() {
   const { taiKhoan } = userData;
   const { userAccountInfo } = useSelector(getUserAccountInfo);
   const { chiTietKhoaHocGhiDanh } = userAccountInfo;
-  console.log('khoaHocGhiDanh', chiTietKhoaHocGhiDanh);
-  console.log('course', courseCode);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const action = getAccountInfoAction();
+    const action = getListBaseOnCourseAction(courseCode, maNhom);
     dispatch(action);
-  }, []);
+  }, [dispatch, courseCode]);
 
   const showConfirm = () => {
     confirm({
@@ -73,6 +71,9 @@ export default function Course() {
           courseCode
         );
         dispatch(action);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       },
 
       onCancel() {},

@@ -73,7 +73,12 @@ function Header() {
             <i className="fa-solid fa-caret-down pl-2"></i>
             <div className="header__user__edit absolute left-[-144px] w-[250px]">
               <ul className="divide-y-[2px] bg-white shadow-xl shadow-sky-200">
-                <li className="hover:bg-sky-300 px-5">
+                <li
+                  onClick={() => {
+                    navigate('/update-info');
+                  }}
+                  className="hover:bg-sky-300 px-5"
+                >
                   Cập nhật thông tin
                 </li>
                 <li
@@ -140,7 +145,7 @@ function Header() {
           </div>
           <a
             className="mt-[1.2rem] mb-[1.2rem] text-1.2 text-black font-medium hover:text-sky-400 transition-all"
-            href=""
+            href="/"
           >
             TRANG CHỦ
           </a>

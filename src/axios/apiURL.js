@@ -8,3 +8,6 @@ export const getSubjectDetailURL =
   '/QuanLyKhoaHoc/LayThongTinKhoaHoc';
 export const assignCourseURL = '/QuanLyKhoaHoc/DangKyKhoaHoc';
 export const getAccountInfoURL = '/QuanLyNguoiDung/ThongTinTaiKhoan';
+export const userUpdateInfoURL =
+  '/QuanLyNguoiDung/CapNhatThongTinNguoiDung';
+export const cancelCourseURL = '/QuanLyKhoaHoc/XoaKhoaHoc';

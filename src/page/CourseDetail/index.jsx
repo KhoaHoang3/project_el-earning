@@ -1,19 +1,33 @@
 import React from 'react';
 import Footer from '../../Component/Footer';
 import Header from '../../Component/Header';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getCourseCode,
   getCourseDetail,
+  getUserAccountInfo,
 } from '../../redux/selectors';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  ExclamationCircleOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
 import { Button, Modal, Space } from 'antd';
 import { USERINFO } from '../../axios/config';
 import { useNavigate } from 'react-router-dom';
+import { assignCourseAction } from '../../redux/thunk/actions';
 const { confirm } = Modal;
 
 export default function CourseDetail() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { courseName } = useSelector(getCourseCode);
+  const { courseDetail } = useSelector(getCourseDetail);
+  const { hinhAnh, luotXem, moTa, tenKhoaHoc, maKhoaHoc } =
+    courseDetail;
+  const { userAccountInfo } = useSelector(getUserAccountInfo);
+  const { chiTietKhoaHocGhiDanh } = userAccountInfo;
+  console.log('maKhoaHoc', maKhoaHoc);
+  console.log('userINFO', userAccountInfo);
   const showConfirm = () => {
     confirm({
       title: 'Bạn phải đăng nhập để đăng ký khóa học !',
@@ -28,13 +42,47 @@ export default function CourseDetail() {
       onCancel() {},
     });
   };
-  const { courseName } = useSelector(getCourseCode);
-  const { courseDetail } = useSelector(getCourseDetail);
-  const { hinhAnh, luotXem, moTa, tenKhoaHoc } = courseDetail;
+
+  const showAssign = (maKhoaHoc, taiKhoan) => {
+    confirm({
+      title: 'Bạn có muốn đăng ký khóa học này ?',
+      icon: <CheckCircleOutlined style={{ color: 'green' }} />,
+      okText: 'Đồng ý',
+      cancelText: 'Hủy',
+
+      onOk() {
+        const action = assignCourseAction({ maKhoaHoc, taiKhoan });
+        dispatch(action);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      },
+
+      onCancel() {},
+    });
+  };
+
   const renderButton = () => {
+    let userInfo = {};
     if (localStorage.getItem(USERINFO)) {
+      userInfo = JSON.parse(localStorage.getItem(USERINFO));
+      let code = chiTietKhoaHocGhiDanh.find(
+        (item) => item.maKhoaHoc === maKhoaHoc
+      );
+      if (code) {
+        return (
+          <button className="bg-gray-400 text-1 415screen:text-1.2 mt-[20px] rounded-lg text-white font-semibold  376screen:px-[30px] py-[20px] w-[100%] 1025screen:w-[50%] cursor-no-drop">
+            Khóa học đã đăng ký
+          </button>
+        );
+      }
       return (
-        <button className="bg-sky-400 text-1 415screen:text-1.2 mt-[20px] rounded-lg text-white font-semibold  376screen:px-[30px] py-[20px] w-[100%] 1025screen:w-[50%]">
+        <button
+          onClick={() => {
+            showAssign(maKhoaHoc, userInfo.taiKhoan);
+          }}
+          className="bg-sky-400 text-1 415screen:text-1.2 mt-[20px] rounded-lg text-white font-semibold  376screen:px-[30px] py-[20px] w-[100%] 1025screen:w-[50%]"
+        >
           Đăng ký khóa học
         </button>
       );

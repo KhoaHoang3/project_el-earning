@@ -8,12 +8,24 @@ import Login from './page/Login';
 import Course from './page/Course';
 import { WOW } from 'wowjs';
 import CourseDetail from './page/CourseDetail';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { USERINFO } from './axios/config';
+import { getAccountInfoAction } from './redux/thunk/actions';
+import UpdateInfo from './page/UpdateInfo';
 
 function App() {
   var wow = new WOW({
     live: false,
   });
   wow.init();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (localStorage.getItem(USERINFO)) {
+      const action = getAccountInfoAction();
+      dispatch(action);
+    }
+  }, [dispatch]);
   return (
     <div className="App">
       <Routes>
@@ -26,6 +38,7 @@ function App() {
           path="/course-detail/:id"
           element={<CourseDetail />}
         />
+        <Route exact path="/update-info" element={<UpdateInfo />} />
       </Routes>
       <ToastContainer />
     </div>

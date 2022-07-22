@@ -19,8 +19,6 @@ function FindCourse() {
   const dispatch = useDispatch();
   const [subject, setSubject] = useState([]);
   const [subjectDetail, setSubjectDetail] = useState({});
-  console.log('subject', subject);
-  console.log('subjectdetail', subjectDetail);
 
   const getSubjectBaseOnCourse = (value) => {
     async function callAPI() {
