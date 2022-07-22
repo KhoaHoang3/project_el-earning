@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DownOutlined } from '@ant-design/icons';
 import { Button, Drawer } from 'antd';
@@ -9,7 +9,7 @@ import {
   getCourseList,
   getUserLoginData,
 } from '../../redux/selectors';
-import { Avatar, Collapse } from 'antd';
+import { Avatar, Collapse, Modal, Space } from 'antd';
 import {
   getCourseListAction,
   getListBaseOnCourseAction,
@@ -19,9 +19,27 @@ import {
   getCourseCodePage,
   getCourseName,
 } from '../../redux/reducers/getCourseCode';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+const { confirm } = Modal;
 const { Panel } = Collapse;
 
 function Header() {
+  const navigate = useNavigate();
+  const showConfirm = () => {
+    confirm({
+      title: 'Bạn vẫn muốn đăng xuất khỏi tài khoản ?',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Đồng ý',
+      cancelText: 'Hủy',
+
+      onOk() {
+        localStorage.clear();
+        navigate('/');
+      },
+
+      onCancel() {},
+    });
+  };
   const [openDrawer, setOpenDrawer] = useState(false);
   const showDrawer = () => {
     setOpenDrawer(true);
@@ -58,7 +76,14 @@ function Header() {
                 <li className="hover:bg-sky-300 px-5">
                   Cập nhật thông tin
                 </li>
-                <li className="hover:bg-sky-300 px-5">ĐĂNG XUẤT</li>
+                <li
+                  onClick={() => {
+                    showConfirm();
+                  }}
+                  className="hover:bg-sky-300 px-5"
+                >
+                  ĐĂNG XUẤT
+                </li>
               </ul>
             </div>
           </span>
@@ -160,7 +185,12 @@ function Header() {
             LIÊN HỆ
           </a>
 
-          <button className="login mt-5 w-full py-3 px-6 text-1.2 font-medium bg-sky-400 rounded-full text-white hover:bg-sky-500 transition-all">
+          <button
+            onClick={() => {
+              showConfirm();
+            }}
+            className="login mt-5 w-full py-3 px-6 text-1.2 font-medium bg-sky-400 rounded-full text-white hover:bg-sky-500 transition-all"
+          >
             ĐĂNG XUẤT
           </button>
         </div>

@@ -6,12 +6,51 @@ import {
   getCourseCode,
   getCourseDetail,
 } from '../../redux/selectors';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Modal, Space } from 'antd';
+import { USERINFO } from '../../axios/config';
+import { useNavigate } from 'react-router-dom';
+const { confirm } = Modal;
 
 export default function CourseDetail() {
+  const navigate = useNavigate();
+  const showConfirm = () => {
+    confirm({
+      title: 'Bạn phải đăng nhập để đăng ký khóa học !',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Đồng ý',
+      cancelText: 'Hủy',
+
+      onOk() {
+        navigate('/login');
+      },
+
+      onCancel() {},
+    });
+  };
   const { courseName } = useSelector(getCourseCode);
   const { courseDetail } = useSelector(getCourseDetail);
-  console.log('courseDetail', courseDetail);
   const { hinhAnh, luotXem, moTa, tenKhoaHoc } = courseDetail;
+  const renderButton = () => {
+    if (localStorage.getItem(USERINFO)) {
+      return (
+        <button className="bg-sky-400 text-1 415screen:text-1.2 mt-[20px] rounded-lg text-white font-semibold  376screen:px-[30px] py-[20px] w-[100%] 1025screen:w-[50%]">
+          Đăng ký khóa học
+        </button>
+      );
+    } else {
+      return (
+        <button
+          onClick={() => {
+            showConfirm();
+          }}
+          className="bg-sky-400 text-1 415screen:text-1.2 mt-[20px] rounded-lg text-white font-semibold  376screen:px-[30px] py-[20px] w-[100%] 1025screen:w-[50%]"
+        >
+          Đăng ký khóa học
+        </button>
+      );
+    }
+  };
   return (
     <>
       <section className="header">
@@ -26,9 +65,7 @@ export default function CourseDetail() {
             <p className="text-1 415screen:text-1.5">
               MÔ TẢ KHÓA HỌC: {moTa}{' '}
             </p>
-            <button className="bg-sky-400 text-1 415screen:text-1.2 mt-[20px] rounded-lg text-white font-semibold  376screen:px-[30px] py-[20px] w-[100%] 1025screen:w-[50%]">
-              Đăng ký khóa học
-            </button>
+            {renderButton()}
           </div>
           <div className="course__image w-[100%] 1025screen:w-[60%] h-[60%] 1025screen:ml-[20px] ">
             <img

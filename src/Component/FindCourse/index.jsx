@@ -1,16 +1,65 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Select, Form, Button, Input, Checkbox } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCourseList } from '../../redux/selectors';
+import {
+  getListBaseOnCourseURL,
+  getSubjectDetailURL,
+} from '../../axios/apiURL';
+import { maNhom, http } from '../../axios/config';
+import { useNavigate } from 'react-router-dom';
+import { getCourseDetail } from '../../redux/reducers/CourseDetailSlice';
+import { toast } from 'react-toastify';
 const { Option } = Select;
 
 function FindCourse() {
   const { courseList } = useSelector(getCourseList);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [subject, setSubject] = useState([]);
+  const [subjectDetail, setSubjectDetail] = useState({});
+  console.log('subject', subject);
+  console.log('subjectdetail', subjectDetail);
 
-  console.log('findCourse', courseList);
+  const getSubjectBaseOnCourse = (value) => {
+    async function callAPI() {
+      try {
+        const result = await http.get(
+          `${getListBaseOnCourseURL}?maDanhMuc=${value}&MaNhom=${maNhom}`
+        );
+        setSubject(result.data);
+      } catch (error) {
+        toast.error(error.response.data, {
+          position: 'top-center',
+          autoClose: 1000,
+        });
+      }
+    }
+    callAPI();
+  };
+
+  const getSubjectDetail = (value) => {
+    async function callAPI() {
+      try {
+        const result = await http.get(
+          `${getSubjectDetailURL}?maKhoaHoc=${value}`
+        );
+        setSubjectDetail(result.data);
+      } catch (error) {
+        toast.error(error.response.data, {
+          position: 'top-center',
+          autoClose: 1000,
+        });
+      }
+    }
+    callAPI();
+  };
+
   const onFinish = (values) => {
-    console.log(values);
+    const { course, subjectCode } = values;
+    dispatch(getCourseDetail(subjectDetail));
+    navigate(`/course-detail/${subjectCode}`);
   };
 
   return (
@@ -30,8 +79,20 @@ function FindCourse() {
           <Form form={form} onFinish={onFinish}>
             <h1 className="text-1.5 font-light">Khóa học</h1>
 
-            <Form.Item name={'course'}>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: 'Hãy chọn khóa học',
+                },
+              ]}
+              name={'course'}
+            >
               <Select
+                onChange={(value) => {
+                  console.log(value);
+                  getSubjectBaseOnCourse(value);
+                }}
                 style={{ width: '100%' }}
                 size="large"
                 placeholder={
@@ -50,8 +111,25 @@ function FindCourse() {
             </Form.Item>
             <h1 className="text-1.5 font-light">Môn học</h1>
 
-            <Form.Item name={'subject'}>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: 'Hãy chọn môn học',
+                },
+              ]}
+              name={'subjectCode'}
+            >
               <Select
+                onChange={(value) => {
+                  getSubjectDetail(value);
+                }}
+                options={subject?.map((item) => {
+                  return {
+                    label: item.tenKhoaHoc,
+                    value: item.maKhoaHoc,
+                  };
+                })}
                 style={{ width: '100%' }}
                 size="large"
                 placeholder={
@@ -59,18 +137,13 @@ function FindCourse() {
                     Chọn môn học
                   </h2>
                 }
-                optionFilterProp="children"
-              >
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="tom">Tom</Option>
-              </Select>
+              ></Select>
             </Form.Item>
 
             <Form.Item>
               <button
                 type="submit"
-                className="find__course__button text-white bg-sky-400 rounded-lg w-full font-semibold text-1.5 py-[20px] hover:bg-sky-500 transition-transform duration-75"
+                className="find__course__button mt-[10px] text-white bg-sky-400 rounded-lg w-full font-semibold text-1.5 py-[20px] hover:bg-sky-500 transition-transform duration-75"
               >
                 TÌM KHÓA HỌC
               </button>

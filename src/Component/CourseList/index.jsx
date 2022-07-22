@@ -40,7 +40,7 @@ function CourseList() {
                     <p className="text-1.2">
                       Lượt xem: {item.luotXem}
                     </p>
-                    <NavLink to={`/course-detail/${item.biDanh}`}>
+                    <NavLink to={`/course-detail/${item.maKhoaHoc}`}>
                       <span
                         onClick={() => {
                           console.log(item);

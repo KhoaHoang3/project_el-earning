@@ -6,6 +6,8 @@ import {
   USERINFO,
 } from '../../axios/config';
 import {
+  assignCourseURL,
+  getAccountInfoURL,
   getCourseListURL,
   getCourseURL,
   getListBaseOnCourseURL,
@@ -18,6 +20,7 @@ import { userLoginData } from '../reducers/userLoginSlice';
 import { getCourseList } from '../reducers/getCourseListSlice';
 import { getCourse } from '../reducers/getCourseSlice';
 import { courseBaseOnCode } from '../reducers/CourseSlice';
+import { getUserAccountInfo } from '../reducers/userAccountInfoSlice';
 
 export const userRegisterAction = (userData, maNhom, navigate) => {
   return async (dispatch) => {
@@ -106,7 +109,6 @@ export const getListBaseOnCourseAction = (course, maNhom) => {
       const result = await http.get(
         `${getListBaseOnCourseURL}?maDanhMuc=${course}&MaNhom=${maNhom}`
       );
-      console.log(result);
       dispatch(courseBaseOnCode(result.data));
       // localStorage.setItem(COURSE, JSON.stringify(result.data));
     } catch (error) {
@@ -115,5 +117,36 @@ export const getListBaseOnCourseAction = (course, maNhom) => {
         autoClose: 1000,
       });
     }
+  };
+};
+
+// assign course
+export const assignCourseAction = (info, biDanh) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post(assignCourseURL, info);
+
+      await dispatch(getListBaseOnCourseAction(biDanh, maNhom));
+
+      toast.success('Đăng ký khóa học thành công', {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    }
+  };
+};
+
+// account information
+export const getAccountInfoAction = () => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post(getAccountInfoURL);
+      dispatch(getUserAccountInfo(result.data));
+    } catch (error) {}
   };
 };

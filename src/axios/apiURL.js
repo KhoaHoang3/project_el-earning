@@ -4,3 +4,7 @@ export const getCourseListURL = '/QuanLyKhoaHoc/LayDanhMucKhoaHoc';
 export const getCourseURL = '/QuanLyKhoaHoc/LayDanhSachKhoaHoc';
 export const getListBaseOnCourseURL =
   '/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc';
+export const getSubjectDetailURL =
+  '/QuanLyKhoaHoc/LayThongTinKhoaHoc';
+export const assignCourseURL = '/QuanLyKhoaHoc/DangKyKhoaHoc';
+export const getAccountInfoURL = '/QuanLyNguoiDung/ThongTinTaiKhoan';

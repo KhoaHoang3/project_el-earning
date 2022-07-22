@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../../Component/Footer';
 import Header from '../../Component/Header';
-import {
-  LikeOutlined,
-  MessageOutlined,
-  StarOutlined,
-} from '@ant-design/icons';
-import { Avatar, List, Space, Breadcrumb } from 'antd';
+import { Avatar, List, Space, Breadcrumb, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   courseBaseOnCode,
   getCourseCode,
+  getUserAccountInfo,
+  getUserLoginData,
 } from '../../redux/selectors';
 import { getListBaseOnCourseAction } from '../../redux/thunk/actions';
-import { COURSE, maNhom } from '../../axios/config';
-import { NavLink } from 'react-router-dom';
+import { COURSE, maNhom, USERINFO } from '../../axios/config';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { getCourseDetail } from '../../redux/reducers/CourseDetailSlice';
+import {
+  ExclamationCircleOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
+import {
+  assignCourseAction,
+  getAccountInfoAction,
+} from '../../redux/thunk/actions.js';
+
+const { confirm } = Modal;
 
 export default function Course() {
   const dispatch = useDispatch();
@@ -24,6 +31,92 @@ export default function Course() {
   const { course } = useSelector(courseBaseOnCode);
   const { courseCode } = useSelector(getCourseCode);
   const { courseName } = useSelector(getCourseCode); // use for breadcrumb
+  const { userData } = useSelector(getUserLoginData);
+  const { taiKhoan } = userData;
+  const { userAccountInfo } = useSelector(getUserAccountInfo);
+  const { chiTietKhoaHocGhiDanh } = userAccountInfo;
+  console.log('khoaHocGhiDanh', chiTietKhoaHocGhiDanh);
+  console.log('course', courseCode);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const action = getAccountInfoAction();
+    dispatch(action);
+  }, []);
+
+  const showConfirm = () => {
+    confirm({
+      title: 'Bạn phải đăng nhập để đăng ký khóa học !',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Đồng ý',
+      cancelText: 'Hủy',
+
+      onOk() {
+        navigate('/login');
+      },
+
+      onCancel() {},
+    });
+  };
+
+  const showAssign = (maKhoaHoc, taiKhoan) => {
+    confirm({
+      title: 'Bạn có muốn đăng ký khóa học này ?',
+      icon: <CheckCircleOutlined style={{ color: 'green' }} />,
+      cancelText: 'Hủy',
+      okText: 'Đồng ý',
+
+      onOk() {
+        const action = assignCourseAction(
+          { maKhoaHoc, taiKhoan },
+          courseCode
+        );
+        dispatch(action);
+      },
+
+      onCancel() {},
+    });
+  };
+
+  const renderButton = (courseCode) => {
+    let userInfo = {};
+    if (localStorage.getItem(USERINFO)) {
+      userInfo = JSON.parse(localStorage.getItem(USERINFO));
+      let code = chiTietKhoaHocGhiDanh.find(
+        (item) => item.maKhoaHoc === courseCode
+      );
+      if (code) {
+        return (
+          <button className="bg-gray-400 text-white font-bold py-[5px] px-[10px] rounded-md cursor-no-drop">
+            Khóa học đã đăng ký
+          </button>
+        );
+      }
+      return (
+        <button
+          onClick={() => {
+            console.log(courseCode, userInfo.taiKhoan);
+            showAssign(courseCode, userInfo.taiKhoan);
+          }}
+          className="bg-sky-400 text-white font-semibold py-[5px] px-[10px] rounded-md"
+        >
+          Đăng ký khóa học{' '}
+        </button>
+      );
+    } else {
+      return (
+        <button
+          onClick={() => {
+            showConfirm();
+          }}
+          className="bg-sky-400 text-white font-semibold py-[5px] px-[10px] rounded-md"
+        >
+          Đăng ký khóa học{' '}
+        </button>
+      );
+    }
+  };
 
   const data = course.map((item) => ({
     key: `${item.maKhoaHoc}`,
@@ -46,9 +139,7 @@ export default function Course() {
           {item.moTa}
         </p>
 
-        <button className="bg-sky-400 text-white font-semibold py-[5px] px-[10px] rounded-md">
-          Đăng ký khóa học{' '}
-        </button>
+        {renderButton(item.maKhoaHoc)}
       </div>
     ),
   }));
