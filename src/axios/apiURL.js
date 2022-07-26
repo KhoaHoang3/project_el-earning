@@ -10,4 +10,8 @@ export const assignCourseURL = '/QuanLyKhoaHoc/DangKyKhoaHoc';
 export const getAccountInfoURL = '/QuanLyNguoiDung/ThongTinTaiKhoan';
 export const userUpdateInfoURL =
   '/QuanLyNguoiDung/CapNhatThongTinNguoiDung';
-export const cancelCourseURL = '/QuanLyKhoaHoc/XoaKhoaHoc';
+export const cancelCourseURL = '/QuanLyKhoaHoc/HuyGhiDanh';
+export const updateCourseInfoURL =
+  '/QuanLyKhoaHoc/CapNhatKhoaHocUpload';
+export const deleteCourseURL = '/QuanLyKhoaHoc/XoaKhoaHoc';
+export const uploadCourseURL = '/QuanLyKhoaHoc/ThemKhoaHocUploadHinh';

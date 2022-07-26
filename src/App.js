@@ -13,6 +13,10 @@ import { useDispatch } from 'react-redux';
 import { USERINFO } from './axios/config';
 import { getAccountInfoAction } from './redux/thunk/actions';
 import UpdateInfo from './page/UpdateInfo';
+import Admin from './page/_Admin';
+import AdminCourseList from './Component/_AdminCourseList';
+import CourseList from './Component/CourseList';
+import AdminCreateCourse from './Component/_AdminCreateCourse';
 
 function App() {
   var wow = new WOW({
@@ -39,6 +43,18 @@ function App() {
           element={<CourseDetail />}
         />
         <Route exact path="/update-info" element={<UpdateInfo />} />
+        <Route exact path="/admin" element={<Admin />}>
+          <Route
+            exact
+            path="/admin/course-list"
+            element={<AdminCourseList />}
+          />
+          <Route
+            exact
+            path="/admin/create-course"
+            element={<AdminCreateCourse />}
+          />
+        </Route>
       </Routes>
       <ToastContainer />
     </div>

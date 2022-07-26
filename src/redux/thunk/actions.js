@@ -8,12 +8,15 @@ import {
 import {
   assignCourseURL,
   cancelCourseURL,
+  deleteCourseURL,
   getAccountInfoURL,
   getCourseListURL,
   getCourseURL,
   getListBaseOnCourseURL,
   loginURL,
   registerURL,
+  updateCourseInfoURL,
+  uploadCourseURL,
   userUpdateInfoURL,
 } from '../../axios/apiURL';
 import { userRegister } from '../reducers/userRegisterSlice';
@@ -117,22 +120,6 @@ export const getListBaseOnCourseAction = (course, maNhom) => {
   };
 };
 
-// assign course
-export const assignCourseAction = (info, biDanh) => {
-  return async (dispatch) => {
-    try {
-      const result = await http.post(assignCourseURL, info);
-
-      await dispatch(getListBaseOnCourseAction(biDanh, maNhom));
-    } catch (error) {
-      toast.error(error.response.data, {
-        position: 'top-center',
-        autoClose: 1000,
-      });
-    }
-  };
-};
-
 // account information
 export const getAccountInfoAction = () => {
   return async (dispatch) => {
@@ -140,6 +127,27 @@ export const getAccountInfoAction = () => {
       const result = await http.post(getAccountInfoURL);
       dispatch(getUserAccountInfo(result.data));
     } catch (error) {}
+  };
+};
+
+// assign course
+export const assignCourseAction = (info, biDanh) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post(assignCourseURL, info);
+
+      // await dispatch(getListBaseOnCourseAction(biDanh, maNhom));
+      dispatch(getAccountInfoAction());
+      toast.success('Đăng ký khóa học thành công', {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    }
   };
 };
 
@@ -162,19 +170,62 @@ export const userUpdateInfoAction = (info) => {
   };
 };
 
-export const cancelCourseAction = (courseCode) => {
+export const cancelCourseAction = (info) => {
   return async (dispatch) => {
     try {
-      const result = await http.delete(
-        `${cancelCourseURL}?MaKhoaHoc=${courseCode}`
-      );
-      console.log(result);
-      toast.success('Xóa khóa học thành công', {
+      const result = await http.post(cancelCourseURL, info);
+
+      dispatch(getAccountInfoAction());
+      toast.success('Hủy khóa học thành công', {
         position: 'top-center',
         autoClose: 1500,
       });
     } catch (error) {
       console.log(error);
+    }
+  };
+};
+
+export const updateCourseInfoAction = (formData) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post(updateCourseInfoURL, formData);
+      console.log(result);
+      dispatch(getCourseAction());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteCourseAction = (courseCode) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.delete(
+        `${deleteCourseURL}?MaKhoaHoc=${courseCode}`
+      );
+      dispatch(getCourseAction());
+      toast.success('Xóa khóa học thành công', {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const uploadCourseAction = (formData) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post(uploadCourseURL, formData);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.content, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
     }
   };
 };

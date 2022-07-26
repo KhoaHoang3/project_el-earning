@@ -71,9 +71,6 @@ export default function Course() {
           courseCode
         );
         dispatch(action);
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
       },
 
       onCancel() {},
@@ -97,7 +94,6 @@ export default function Course() {
       return (
         <button
           onClick={() => {
-            console.log(courseCode, userInfo.taiKhoan);
             showAssign(courseCode, userInfo.taiKhoan);
           }}
           className="bg-sky-400 text-white font-semibold py-[5px] px-[10px] rounded-md"

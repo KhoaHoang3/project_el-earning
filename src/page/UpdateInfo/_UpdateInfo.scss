@@ -1,5 +1,23 @@
 .update__info {
+  @media screen and (max-width: 769px) {
+    min-height: 75vh;
+  }
+  @media screen and (max-width: 601px) {
+    min-height: 92vh;
+  }
   .ant-tabs-tab-btn {
     font-size: 1.2rem;
+  }
+  form {
+    .text-field {
+      @media screen and (max-width: 601px) {
+        width: 80%;
+      }
+    }
+    button {
+      @media screen and (max-width: 601px) {
+        width: 80%;
+      }
+    }
   }
 }
