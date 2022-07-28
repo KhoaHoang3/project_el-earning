@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const TOKEN_CYBERSOFT =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCAyMyIsIkhldEhhblN0cmluZyI6IjIwLzEwLzIwMjIiLCJIZXRIYW5UaW1lIjoiMTY2NjIyNDAwMDAwMCIsIm5iZiI6MTYzODExODgwMCwiZXhwIjoxNjY2MzcxNjAwfQ.hoaq9WsA187Q0NvdBYPZsn8c2CRg_ZE4mQO5_lUyAL4';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJKYXZhIDE3IiwiSGV0SGFuU3RyaW5nIjoiMTkvMTIvMjAyMiIsIkhldEhhblRpbWUiOiIxNjcxNDA4MDAwMDAwIiwibmJmIjoxNjQ4NjU5NjAwLCJleHAiOjE2NzE1NTU2MDB9.OhFEeK7ExgP3U24hEq7GxmL5VzAjzaEPPeOZpaWzZGE';
 export const DOMAIN = 'https://elearningnew.cybersoft.edu.vn/api';
 export const USER_LOGIN = 'userLogin';
 export const ACCESSTOKEN = 'accessToken';

@@ -17,6 +17,8 @@ import Admin from './page/_Admin';
 import AdminCourseList from './Component/_AdminCourseList';
 import CourseList from './Component/CourseList';
 import AdminCreateCourse from './Component/_AdminCreateCourse';
+import AdminUserList from './Component/_AdminUserList';
+import AdminAddUser from './Component/_AdminAddUser';
 
 function App() {
   var wow = new WOW({
@@ -53,6 +55,17 @@ function App() {
             exact
             path="/admin/create-course"
             element={<AdminCreateCourse />}
+          />
+          <Route
+            exact
+            path="/admin/user-list"
+            element={<AdminUserList />}
+          />
+
+          <Route
+            exact
+            path="/admin/add-user"
+            element={<AdminAddUser />}
           />
         </Route>
       </Routes>

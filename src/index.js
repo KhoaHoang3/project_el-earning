@@ -13,6 +13,7 @@ import 'antd/dist/antd.min.css';
 import 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

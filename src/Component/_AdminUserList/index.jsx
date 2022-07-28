@@ -1,47 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import Highlighter from 'react-highlight-words';
 import {
   SearchOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Input, Space, Table, Modal } from 'antd';
-import Highlighter from 'react-highlight-words';
+import { Button, Input, Space, Table, Tag, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  deleteCourseAction,
-  getCourseAction,
-} from '../../redux/thunk/actions';
-import { getCourse } from '../../redux/selectors';
-import EditCourseDrawer from '../../Drawer/EditCourseDrawer';
-import { getCourseDetailEdit } from '../../redux/reducers/courseDetailEditSlice';
+import { getUserList } from '../../redux/selectors';
+import EditUserDrawer from '../../Drawer/EditUserDrawer';
+import { getUserInfo } from '../../redux/reducers/getUserListSlice';
+import { deleteUserAction } from '../../redux/thunk/actions';
 const { confirm } = Modal;
 
-export default function AdminCourseList() {
+export default function AdminUserList() {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
   const dispatch = useDispatch();
-  const { course } = useSelector(getCourse);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const action = getCourseAction();
-    dispatch(action);
-  }, []);
-  const showConfirm = (maKhoaHoc) => {
-    confirm({
-      title: 'Bạn vẫn muốn xóa khóa học này?',
-      icon: <ExclamationCircleOutlined />,
-      okText: 'Đồng ý',
-      cancelText: 'Hủy',
-
-      onOk() {
-        const action = deleteCourseAction(maKhoaHoc);
-        dispatch(action);
-      },
-
-      onCancel() {},
-    });
-  };
+  const { users } = useSelector(getUserList);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -155,50 +131,57 @@ export default function AdminCourseList() {
 
   const columns = [
     {
-      title: 'Mã khóa học',
-      dataIndex: 'maKhoaHoc',
-      key: 'maKhoaHoc',
+      title: 'Họ tên',
+      dataIndex: 'hoTen',
+      key: 'hoTen',
       width: '30%',
       align: 'center',
-      render: (text, record, index) => {
-        return <h1 className="text-1.2">{text}</h1>;
-      },
 
-      ...getColumnSearchProps('maKhoaHoc'),
+      ...getColumnSearchProps('hoTen'),
     },
     {
-      title: 'Tên khóa học',
-      dataIndex: 'tenKhoaHoc',
-      key: 'tenKhoaHoc',
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       width: '20%',
       align: 'center',
 
-      ...getColumnSearchProps('tenKhoaHoc'),
+      ...getColumnSearchProps('email'),
     },
     {
-      title: 'Lượt xem',
-      dataIndex: 'luotXem',
-      key: 'luotXem',
+      title: 'Số điện thoại',
+      dataIndex: 'soDt',
+      key: 'soDt',
       align: 'center',
 
-      ...getColumnSearchProps('address'),
+      ...getColumnSearchProps('soDT'),
     },
 
     {
-      title: 'Hình ảnh',
-      dataIndex: 'hinhAnh',
-      key: 'hinhAnh',
+      title: 'Loại người dùng',
+      dataIndex: 'maLoaiNguoiDung',
+      key: 'maLoaiNguoiDung',
       align: 'center',
-      width: '10%',
+      ...getColumnSearchProps('maLoaiNguoiDung'),
+
       render: (text, record, index) => {
-        return (
-          <img
-            style={{ borderRadius: '10px' }}
-            height={150}
-            width={'100%'}
-            src={record.hinhAnh}
-          ></img>
-        );
+        {
+          return record.maLoaiNguoiDung === 'HV' ? (
+            <Tag
+              style={{ fontSize: '1.2rem', padding: '10px' }}
+              color="green"
+            >
+              Học viên
+            </Tag>
+          ) : (
+            <Tag
+              style={{ fontSize: '1.2rem', padding: '10px' }}
+              color="blue"
+            >
+              Giáo vụ
+            </Tag>
+          );
+        }
       },
     },
 
@@ -212,8 +195,8 @@ export default function AdminCourseList() {
           <>
             <button
               onClick={() => {
-                setVisible(true);
-                dispatch(getCourseDetailEdit(record));
+                setIsModalVisible(true);
+                dispatch(getUserInfo(record));
               }}
               className="bg-sky-400 py-[10px] px-[15px] rounded-md mr-[1rem]"
             >
@@ -222,7 +205,7 @@ export default function AdminCourseList() {
 
             <button
               onClick={() => {
-                showConfirm(record.maKhoaHoc);
+                showConfirm(record.taiKhoan);
               }}
               className="bg-red-400 py-[10px] px-[15px] rounded-md"
             >
@@ -233,19 +216,29 @@ export default function AdminCourseList() {
       },
     },
   ];
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showConfirm = (taiKhoan) => {
+    confirm({
+      title: 'Bạn vẫn muốn xóa người dùng này ?',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Đồng ý',
+      cancelText: 'Hủy',
+
+      onOk() {
+        const action = deleteUserAction(taiKhoan);
+        dispatch(action);
+      },
+
+      onCancel() {},
+    });
+  };
   return (
     <>
-      <Table
-        style={{ fontSize: '2rem' }}
-        rowKey="maKhoaHoc"
-        columns={columns}
-        dataSource={course}
-      />
-
-      {visible && (
-        <EditCourseDrawer
-          visible={visible}
-          closeDrawer={setVisible}
+      <Table rowKey={'hoTen'} columns={columns} dataSource={users} />
+      {isModalVisible && (
+        <EditUserDrawer
+          visible={isModalVisible}
+          closeModal={setIsModalVisible}
         />
       )}
     </>

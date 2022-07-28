@@ -15,3 +15,10 @@ export const updateCourseInfoURL =
   '/QuanLyKhoaHoc/CapNhatKhoaHocUpload';
 export const deleteCourseURL = '/QuanLyKhoaHoc/XoaKhoaHoc';
 export const uploadCourseURL = '/QuanLyKhoaHoc/ThemKhoaHocUploadHinh';
+export const getUserListURL = '/QuanLyNguoiDung/LayDanhSachNguoiDung';
+export const getTypeOfUserURL =
+  '/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung';
+export const updateUserInfoURL =
+  '/QuanLyNguoiDung/CapNhatThongTinNguoiDung';
+export const addUserURL = '/QuanLyNguoiDung/ThemNguoiDung';
+export const deleteUserURL = '/QuanLyNguoiDung/XoaNguoiDung';

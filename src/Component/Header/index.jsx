@@ -137,7 +137,12 @@ function Header() {
                 }
                 key="1"
               >
-                <h1 className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5">
+                <h1
+                  onClick={() => {
+                    navigate('/update-info');
+                  }}
+                  className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5"
+                >
                   CẬP NHẬT THÔNG TIN
                 </h1>
               </Panel>

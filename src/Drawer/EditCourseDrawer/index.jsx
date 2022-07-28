@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -20,10 +20,26 @@ import { getCourseDetailEdit } from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { updateCourseInfoAction } from '../../redux/thunk/actions';
+import { http } from '../../axios/config';
+import { getCourseListURL } from '../../axios/apiURL';
 
 export default function EditCourseDrawer({ visible, closeDrawer }) {
   const { courseDetail } = useSelector(getCourseDetailEdit);
+  const [course, setCourse] = useState([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function callAPI() {
+      try {
+        const result = await http.get(getCourseListURL);
+        setCourse(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    callAPI();
+  }, []);
+
   const {
     tenKhoaHoc,
     hinhAnh,
@@ -32,10 +48,12 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
     nguoiTao,
     maNhom,
     maKhoaHoc,
+    danhMucKhoaHoc,
   } = courseDetail;
-  const { taiKhoan, hoTen } = nguoiTao;
-  const oldImage = hinhAnh;
   console.log('courseDetail', courseDetail);
+  const { taiKhoan, hoTen } = nguoiTao;
+  const { maDanhMucKhoaHoc, tenDanhMucKhoaHoc } = danhMucKhoaHoc;
+  const oldImage = hinhAnh;
   const submitCourseInfo = (values) => {
     console.log(values);
     const { tenKhoaHoc, nguoiTao, moTa, hinhAnh, ngayTao } = values;
@@ -57,7 +75,7 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
     if (Array.isArray(e)) {
       return e;
     }
-    return e && e.file;
+    return e && e.fileList;
   };
   return (
     <div>
@@ -113,16 +131,10 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
               ngayTao: moment(ngayTao),
               nguoiTao: taiKhoan,
               moTa: moTa,
+              maDanhMucKhoaHoc: maDanhMucKhoaHoc,
+              tenDanhMucKhoaHoc: tenDanhMucKhoaHoc,
             }}
           >
-            <Form.Item label="Mã khóa học" name={'maKhoaHoc'}>
-              <Input
-                name="maKhoaHoc"
-                disabled
-                style={{ fontWeight: 'bold' }}
-              />
-            </Form.Item>
-
             <Form.Item label="Mã nhóm" name={'maNhom'}>
               <Input
                 name="maNhom"
@@ -130,24 +142,51 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
                 style={{ fontWeight: 'bold' }}
               />
             </Form.Item>
+
+            <Form.Item label="Mã khóa học" name={'maKhoaHoc'}>
+              <Input
+                name="maKhoaHoc"
+                disabled
+                style={{ fontWeight: 'bold' }}
+              />
+            </Form.Item>
             <Form.Item label="Tên khóa học" name={'tenKhoaHoc'}>
               <Input name="tenKhoaHoc" />
+            </Form.Item>
+            <Form.Item
+              label="Loại khóa học"
+              name={'maDanhMucKhoaHoc'}
+            >
+              <Select
+                options={course.map((item) => {
+                  return {
+                    label: item.tenDanhMuc,
+                    value: item.maDanhMuc,
+                  };
+                })}
+                defaultValue={tenDanhMucKhoaHoc}
+                name="maDanhMucKhoaHoc"
+              ></Select>
             </Form.Item>
             <Form.Item label="Mô tả khóa học" name={'moTa'}>
               <ReactQuill />
             </Form.Item>
             <Form.Item label="Ngày tạo" name={'ngayTao'}>
-              <DatePicker name="ngayTao" format={'YYYY/MM/DD'} />
+              <DatePicker name="ngayTao" format={'DD/MM/YYYY'} />
             </Form.Item>
             <Form.Item label="Người tạo" name={'nguoiTao'}>
               <Input name="nguoiTao" />
             </Form.Item>
 
-            <Form.Item label="Hình ảnh" name={'hinhAnh'}>
+            <Form.Item
+              valuePropName="fileList"
+              getValueFromEvent={getFile}
+              label="Hình ảnh"
+              name={'hinhAnh'}
+            >
               <Upload
                 status={'done'}
                 openFileDialogOnClick
-                getValueFromEvent={getFile}
                 accept=".png,.jpeg,.jpg,.doc"
                 listType="picture"
                 beforeUpload={(file) => {

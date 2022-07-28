@@ -6,16 +6,20 @@ import {
   USERINFO,
 } from '../../axios/config';
 import {
+  addUserURL,
   assignCourseURL,
   cancelCourseURL,
   deleteCourseURL,
+  deleteUserURL,
   getAccountInfoURL,
   getCourseListURL,
   getCourseURL,
   getListBaseOnCourseURL,
+  getUserListURL,
   loginURL,
   registerURL,
   updateCourseInfoURL,
+  updateUserInfoURL,
   uploadCourseURL,
   userUpdateInfoURL,
 } from '../../axios/apiURL';
@@ -26,6 +30,7 @@ import { getCourseList } from '../reducers/getCourseListSlice';
 import { getCourse } from '../reducers/getCourseSlice';
 import { courseBaseOnCode } from '../reducers/CourseSlice';
 import { getUserAccountInfo } from '../reducers/userAccountInfoSlice';
+import { getUserList } from '../reducers/getUserListSlice';
 
 export const userRegisterAction = (userData, maNhom, navigate) => {
   return async (dispatch) => {
@@ -220,9 +225,85 @@ export const uploadCourseAction = (formData) => {
     try {
       const result = await http.post(uploadCourseURL, formData);
       console.log(result);
+      toast.success('Thêm khóa học thành công', {
+        position: 'top-center',
+        autoClose: 1000,
+      });
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.content, {
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    }
+  };
+};
+
+export const getUserListAction = () => {
+  return async (dispatch) => {
+    try {
+      const result = await http.get(
+        `${getUserListURL}?MaNhom=${maNhom}`
+      );
+      dispatch(getUserList(result.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const updateUserInfoAction = (userInfo, maNhom) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.put(updateUserInfoURL, userInfo);
+      console.log(result);
+      dispatch(getUserListAction());
+      toast.success('Cập nhật thông tin thành công', {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    }
+  };
+};
+
+export const addUserAction = (userInfo) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.post(addUserURL, userInfo);
+      dispatch(getUserListAction());
+      toast.success('Thêm người dùng thành công', {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    }
+  };
+};
+
+export const deleteUserAction = (userAccount) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.delete(
+        `${deleteUserURL}?TaiKhoan=${userAccount}`
+      );
+
+      dispatch(getUserListAction());
+
+      toast.success('Xóa người dùng thành công', {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    } catch (error) {
+      toast.error(error.response.data, {
         position: 'top-center',
         autoClose: 1000,
       });

@@ -6,6 +6,9 @@
 @import './Component/Footer/Footer';
 @import './Component/_AdminCourseList/AdminCourseList';
 
+// for drawer and modal
+@import './Drawer/EditUserDrawer/EditUserDrawer';
+
 //for pages
 @import './page/Course/Course';
 @import './page/CourseDetail/CourseDetail';

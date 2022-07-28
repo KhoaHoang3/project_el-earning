@@ -60,6 +60,24 @@ export default function Admin() {
                 navigate('/admin/create-course');
               },
             },
+
+            {
+              key: '/admin/user-list',
+              icon: <i className="fa-solid fa-circle-user"></i>,
+              label: 'Danh sách người dùng',
+              onClick: () => {
+                navigate('/admin/user-list');
+              },
+            },
+
+            {
+              key: '/admin/add-user',
+              icon: <i className="fa-solid fa-circle-plus"></i>,
+              label: 'Thêm người dùng',
+              onClick: () => {
+                navigate('/admin/add-user');
+              },
+            },
           ]}
         />
       </Sider>
@@ -80,7 +98,6 @@ export default function Admin() {
           }}
         >
           <Outlet />
-         
         </Content>
       </Layout>
     </Layout>

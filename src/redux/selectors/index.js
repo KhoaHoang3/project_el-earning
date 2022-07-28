@@ -7,3 +7,4 @@ export const courseBaseOnCode = (state) => state.course;
 export const getCourseDetail = (state) => state.courseDetail;
 export const getUserAccountInfo = (state) => state.accountInfo;
 export const getCourseDetailEdit = (state) => state.courseDetailEdit;
+export const getUserList = (state) => state.users;
