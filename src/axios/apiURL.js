@@ -11,10 +11,11 @@ export const getAccountInfoURL = '/QuanLyNguoiDung/ThongTinTaiKhoan';
 export const userUpdateInfoURL =
   '/QuanLyNguoiDung/CapNhatThongTinNguoiDung';
 export const cancelCourseURL = '/QuanLyKhoaHoc/HuyGhiDanh';
-export const updateCourseInfoURL =
-  '/QuanLyKhoaHoc/CapNhatKhoaHocUpload';
+export const upLoadCourseImageURL =
+  '/QuanLyKhoaHoc/UploadHinhAnhKhoaHoc';
 export const deleteCourseURL = '/QuanLyKhoaHoc/XoaKhoaHoc';
-export const uploadCourseURL = '/QuanLyKhoaHoc/ThemKhoaHocUploadHinh';
+export const uploadCourseURL = '/QuanLyKhoaHoc/ThemKhoaHoc';
+export const updateCourseURL = '/QuanLyKhoaHoc/CapNhatKhoaHoc';
 export const getUserListURL = '/QuanLyNguoiDung/LayDanhSachNguoiDung';
 export const getTypeOfUserURL =
   '/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung';

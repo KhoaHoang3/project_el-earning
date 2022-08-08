@@ -214,6 +214,7 @@ export default function AdminCourseList() {
               onClick={() => {
                 setVisible(true);
                 dispatch(getCourseDetailEdit(record));
+                console.log(record);
               }}
               className="bg-sky-400 py-[10px] px-[15px] rounded-md mr-[1rem]"
             >

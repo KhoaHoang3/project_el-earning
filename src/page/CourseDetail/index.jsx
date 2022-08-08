@@ -15,6 +15,7 @@ import { Button, Modal, Space } from 'antd';
 import { USERINFO } from '../../axios/config';
 import { useNavigate } from 'react-router-dom';
 import { assignCourseAction } from '../../redux/thunk/actions';
+import parse from 'html-react-parser';
 const { confirm } = Modal;
 
 export default function CourseDetail() {
@@ -26,8 +27,7 @@ export default function CourseDetail() {
     courseDetail;
   const { userAccountInfo } = useSelector(getUserAccountInfo);
   const { chiTietKhoaHocGhiDanh } = userAccountInfo;
-  console.log('maKhoaHoc', maKhoaHoc);
-  console.log('userINFO', userAccountInfo);
+
   const showConfirm = () => {
     confirm({
       title: 'Bạn phải đăng nhập để đăng ký khóa học !',
@@ -53,9 +53,6 @@ export default function CourseDetail() {
       onOk() {
         const action = assignCourseAction({ maKhoaHoc, taiKhoan });
         dispatch(action);
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
       },
 
       onCancel() {},
@@ -111,7 +108,7 @@ export default function CourseDetail() {
               TÊN KHÓA HỌC: {tenKhoaHoc}{' '}
             </h1>
             <p className="text-1 415screen:text-1.5">
-              MÔ TẢ KHÓA HỌC: {moTa}{' '}
+              MÔ TẢ KHÓA HỌC: {parse(moTa)}{' '}
             </p>
             {renderButton()}
           </div>

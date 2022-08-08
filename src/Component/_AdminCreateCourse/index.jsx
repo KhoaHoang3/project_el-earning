@@ -57,20 +57,38 @@ export default function AdminCreateCourse() {
   }, []);
 
   const submitCourseInfo = (values) => {
-    console.log(values);
-    const { ngayTao, hinhAnh, moTa } = values;
-    const newNgayTao = moment(ngayTao).format('DD/MM/YYYY');
-    const formData = new FormData();
-    for (let key in values) {
-      if (key === 'ngayTao') {
-        formData.append('ngayTao', newNgayTao);
-      } else if (key !== 'hinhAnh') {
-        formData.append(key, values[key]);
-      } else {
-        formData.append('File', hinhAnh);
-      }
+    const {
+      danhGia,
+      HINHANH,
+      luotXem,
+      maDanhMucKhoaHoc,
+      maKhoaHoc,
+      maNhom,
+      moTa,
+      NGAYTAO,
+      taiKhoanNguoiTao,
+      tenKhoaHoc,
+      biDanh,
+    } = values;
+    const ngayTao = moment(NGAYTAO).format('DD/MM/YYYY');
+
+    let hinhAnh = '';
+    for (let index = 0; index < HINHANH.length; index++) {
+      hinhAnh = HINHANH[index].name;
     }
-    const action = uploadCourseAction(formData);
+    const action = uploadCourseAction({
+      tenKhoaHoc,
+      biDanh,
+      danhGia,
+      hinhAnh,
+      luotXem,
+      maDanhMucKhoaHoc,
+      maKhoaHoc,
+      maNhom,
+      moTa,
+      ngayTao,
+      taiKhoanNguoiTao,
+    });
     dispatch(action);
   };
 
@@ -131,14 +149,26 @@ export default function AdminCreateCourse() {
           rules={[
             {
               required: true,
+              message: 'Hãy nhập bí danh khóa học',
+            },
+          ]}
+          label="Bí danh khóa học"
+          name={'biDanh'}
+        >
+          <Input name="biDanh" />
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: true,
               message: 'Hãy chọn loại khóa học',
             },
           ]}
           label="Loại khóa học"
-          name={'danhMucKhoaHoc'}
+          name={'maDanhMucKhoaHoc'}
         >
           <Select
-            name="danhMucKhoaHoc"
+            name="maDanhMucKhoaHoc"
             options={course.map((item) => {
               return {
                 label: item.tenDanhMuc,
@@ -156,10 +186,10 @@ export default function AdminCreateCourse() {
             },
           ]}
           label="Người tạo"
-          name={'nguoiTao'}
+          name={'taiKhoanNguoiTao'}
         >
           <Select
-            name="nguoiTao"
+            name="taiKhoanNguoiTao"
             options={users
               .filter((user) => user.maLoaiNguoiDung === 'GV')
               .map((user) => {
@@ -193,23 +223,24 @@ export default function AdminCreateCourse() {
           />
         </Form.Item>
 
-        <Form.Item label="Ngày tạo" name={'ngayTao'}>
-          <DatePicker name="ngayTao" format={'DD/MM/YYYY'} />
+        <Form.Item label="Ngày tạo" name={'NGAYTAO'}>
+          <DatePicker name="NGAYTAO" format={'DD/MM/YYYY'} />
         </Form.Item>
 
         <Form.Item
           valuePropName="fileList"
           label="Hình ảnh"
-          name={'hinhAnh'}
+          name={'HINHANH'}
           getValueFromEvent={getFile}
         >
           <Upload
-            name="hinhAnh"
+            name="HINHANH"
             status={'done'}
             openFileDialogOnClick
             accept=".png,.jpeg,.jpg,.doc"
             listType="picture"
             beforeUpload={(file) => {
+              console.log(file);
               return false;
             }}
             maxCount={1}

@@ -18,8 +18,9 @@ import {
   getUserListURL,
   loginURL,
   registerURL,
-  updateCourseInfoURL,
+  updateCourseURL,
   updateUserInfoURL,
+  upLoadCourseImageURL,
   uploadCourseURL,
   userUpdateInfoURL,
 } from '../../axios/apiURL';
@@ -161,14 +162,11 @@ export const userUpdateInfoAction = (info) => {
   return async (dispatch) => {
     try {
       const result = await http.put(userUpdateInfoURL, info);
-      console.log(result);
-      toast.success(
-        'Cập nhật thông tin thành công, đăng nhập lại để thấy sự thay đổi',
-        {
-          position: 'top-center',
-          autoClose: 2000,
-        }
-      );
+      dispatch(getAccountInfoAction());
+      toast.success('Cập nhật thông tin thành công', {
+        position: 'top-center',
+        autoClose: 2000,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -191,10 +189,10 @@ export const cancelCourseAction = (info) => {
   };
 };
 
-export const updateCourseInfoAction = (formData) => {
+export const uploadCourseImageAction = (formData) => {
   return async (dispatch) => {
     try {
-      const result = await http.post(updateCourseInfoURL, formData);
+      const result = await http.post(upLoadCourseImageURL, formData);
       console.log(result);
       dispatch(getCourseAction());
     } catch (error) {
@@ -220,17 +218,29 @@ export const deleteCourseAction = (courseCode) => {
   };
 };
 
-export const uploadCourseAction = (formData) => {
+export const uploadCourseAction = (formInfo) => {
   return async (dispatch) => {
     try {
-      const result = await http.post(uploadCourseURL, formData);
-      console.log(result);
+      const result = await http.post(uploadCourseURL, formInfo);
       toast.success('Thêm khóa học thành công', {
         position: 'top-center',
         autoClose: 1000,
       });
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
+    }
+  };
+};
+
+export const updateCourseAction = (courseInfo) => {
+  return async (dispatch) => {
+    try {
+      const result = await http.put(updateCourseURL, courseInfo);
+      console.log(result);
+    } catch (error) {
       toast.error(error.response.data, {
         position: 'top-center',
         autoClose: 1000,
@@ -247,7 +257,10 @@ export const getUserListAction = () => {
       );
       dispatch(getUserList(result.data));
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data, {
+        position: 'top-center',
+        autoClose: 1000,
+      });
     }
   };
 };

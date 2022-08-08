@@ -63,6 +63,50 @@ function Header() {
 
   const renderUI = () => {
     if (localStorage.getItem(ACCESSTOKEN)) {
+      if (userInfo.maLoaiNguoiDung === 'GV') {
+        return (
+          <div className="header__user  pr-[5px] relative hidden 965screen:flex leading-leading-more-loose text-1.2 font-semibold decoration-pink-600">
+            <span className="pr-2 relative bottom-1">
+              <Avatar src={`https://joeschmoe.io/api/v1/${hoTen}`} />
+            </span>
+            <span className="inline-block pr-2 mr-2 text-black transition-all cursor-pointer">
+              {hoTen}
+              <i className="fa-solid fa-caret-down pl-2"></i>
+              <div className="header__user__edit absolute left-[-144px] w-[250px]">
+                <ul className="divide-y-[2px] bg-white shadow-xl shadow-sky-200">
+                  <li
+                    onClick={() => {
+                      navigate('/update-info');
+                    }}
+                    className="hover:bg-sky-300 px-5"
+                  >
+                    Thông tin tài khoản
+                  </li>
+
+                  <li
+                    onClick={() => {
+                      navigate('/admin/course-list');
+                    }}
+                    className="hover:bg-sky-300 px-5"
+                  >
+                    Đi đến trang admin
+                  </li>
+
+                  <li
+                    onClick={() => {
+                      showConfirm();
+                    }}
+                    className="hover:bg-sky-300 px-5"
+                  >
+                    ĐĂNG XUẤT
+                  </li>
+                </ul>
+              </div>
+            </span>
+          </div>
+        );
+      }
+
       return (
         <div className="header__user  pr-[5px] relative hidden 965screen:flex leading-leading-more-loose text-1.2 font-semibold decoration-pink-600">
           <span className="pr-2 relative bottom-1">
@@ -79,7 +123,7 @@ function Header() {
                   }}
                   className="hover:bg-sky-300 px-5"
                 >
-                  Cập nhật thông tin
+                  Thông tin tài khoản
                 </li>
                 <li
                   onClick={() => {
@@ -118,6 +162,104 @@ function Header() {
 
   const renderUIMobile = () => {
     if (localStorage.getItem(ACCESSTOKEN)) {
+      if (userInfo.maLoaiNguoiDung === 'GV') {
+        return (
+          <div className="nav__mobile flex flex-col text-center relative">
+            <div className="user__login ">
+              <Collapse defaultActiveKey={['1']}>
+                <Panel
+                  header={
+                    <div className="">
+                      <span className="pr-2 relative bottom-1">
+                        <Avatar
+                          src={`https://joeschmoe.io/api/v1/${hoTen}`}
+                        />
+                      </span>
+                      <span className=" relative  left-[6px] 321screen:left-[35px] inline-block pr-2 mr-2 text-black transition-all font-semibold text-1.2">
+                        {hoTen}
+                      </span>
+                    </div>
+                  }
+                  key="1"
+                >
+                  <h1
+                    onClick={() => {
+                      navigate('/update-info');
+                    }}
+                    className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5"
+                  >
+                    Thông tin tài khoản
+                  </h1>
+
+                  <h1
+                    onClick={() => {
+                      navigate('/admin/course-list');
+                    }}
+                    className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5"
+                  >
+                    Đi đến trang admin
+                  </h1>
+                </Panel>
+              </Collapse>
+            </div>
+            <a
+              className="mt-[1.2rem] mb-[1.2rem] text-1.2 text-black font-medium hover:text-sky-400 transition-all"
+              href="/"
+            >
+              TRANG CHỦ
+            </a>
+            <Collapse defaultActiveKey={['1']}>
+              <Panel
+                header={
+                  <div className="">
+                    <span className=" text-center relative  left-[36px] 321screen:left-[72px] text-black transition-all font-semibold text-1.2 hover:text-sky-400 ">
+                      KHÓA HỌC
+                    </span>
+                  </div>
+                }
+                key="1"
+              >
+                {courseList.map((item, index) => {
+                  return (
+                    <NavLink
+                      onClick={() => {
+                        const action = getListBaseOnCourseAction(
+                          item.maDanhMuc,
+                          maNhom
+                        );
+                        dispatch(action);
+                        dispatch(getCourseCodePage(item.maDanhMuc));
+                        dispatch(getCourseName(item.tenDanhMuc));
+                      }}
+                      key={index}
+                      to={`/course/${item.maDanhMuc}`}
+                    >
+                      <h1 className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5">
+                        {item.tenDanhMuc}
+                      </h1>
+                    </NavLink>
+                  );
+                })}
+              </Panel>
+            </Collapse>
+            <a
+              className="mb-[1.2rem] mt-[1.2rem] text-1.2 text-black font-medium  hover:text-sky-400 transition-all"
+              href=""
+            >
+              LIÊN HỆ
+            </a>
+
+            <button
+              onClick={() => {
+                showConfirm();
+              }}
+              className="login mt-5 w-full py-3 px-6 text-1.2 font-medium bg-sky-400 rounded-full text-white hover:bg-sky-500 transition-all"
+            >
+              ĐĂNG XUẤT
+            </button>
+          </div>
+        );
+      }
       return (
         <div className="nav__mobile flex flex-col text-center relative">
           <div className="user__login ">
@@ -143,7 +285,7 @@ function Header() {
                   }}
                   className="text-1.2 font-semibold cursor-pointer hover:text-sky-400 transition-all duration-0.5"
                 >
-                  CẬP NHẬT THÔNG TIN
+                  Thông tin tài khoản
                 </h1>
               </Panel>
             </Collapse>
@@ -341,37 +483,6 @@ function Header() {
             visible={openDrawer}
           >
             {renderUIMobile()}
-            {/* <div className="nav__mobile flex flex-col text-center relative">
-              <a
-                className="text-1.2 text-black font-medium hover:text-sky-400 transition-all"
-                href=""
-              >
-                TRANG CHỦ
-              </a>
-              <a
-                className=" mt-[1.2rem] text-1.2 text-black font-medium hover:text-sky-400 transition-all"
-                href=""
-              >
-                KHÓA HỌC
-              </a>
-              <a
-                className="mb-[1.2rem] mt-[1.2rem] text-1.2 text-black font-medium  hover:text-sky-400 transition-all"
-                href=""
-              >
-                LIÊN HỆ
-              </a>
-              <NavLink to={'/register'}>
-                <button className="register  w-full py-3 px-6 text-1.2 font-medium bg-sky-400 rounded-full text-white hover:bg-sky-500 transition-all">
-                  ĐĂNG KÝ
-                </button>
-              </NavLink>
-
-              <NavLink to={'/login'}>
-                <button className="login mt-5 w-full py-3 px-6 text-1.2 font-medium bg-sky-400 rounded-full text-white hover:bg-sky-500 transition-all">
-                  ĐĂNG NHẬP
-                </button>
-              </NavLink>
-            </div> */}
           </Drawer>
         </div>
       </div>

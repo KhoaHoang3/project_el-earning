@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -16,16 +16,26 @@ import {
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ReactQuill from 'react-quill';
-import { getCourseDetailEdit } from '../../redux/selectors';
+import {
+  getCourseDetailEdit,
+  getUserList,
+} from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { updateCourseInfoAction } from '../../redux/thunk/actions';
 import { http } from '../../axios/config';
 import { getCourseListURL } from '../../axios/apiURL';
+import { toast } from 'react-toastify';
+import {
+  getUserListAction,
+  updateCourseAction,
+  uploadCourseImageAction,
+} from '../../redux/thunk/actions';
 
-export default function EditCourseDrawer({ visible, closeDrawer }) {
+function EditCourseDrawer({ visible, closeDrawer }) {
   const { courseDetail } = useSelector(getCourseDetailEdit);
   const [course, setCourse] = useState([]);
+  const { users } = useSelector(getUserList);
+  console.log(users);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,11 +44,17 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
         const result = await http.get(getCourseListURL);
         setCourse(result.data);
       } catch (error) {
-        console.log(error);
+        toast.error(error.response.data, {
+          position: 'top-center',
+          autoClose: 1000,
+        });
       }
     }
     callAPI();
-  }, []);
+
+    const action = getUserListAction();
+    dispatch(action);
+  }, [dispatch]);
 
   const {
     tenKhoaHoc,
@@ -49,26 +65,25 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
     maNhom,
     maKhoaHoc,
     danhMucKhoaHoc,
+    biDanh,
   } = courseDetail;
   console.log('courseDetail', courseDetail);
   const { taiKhoan, hoTen } = nguoiTao;
   const { maDanhMucKhoaHoc, tenDanhMucKhoaHoc } = danhMucKhoaHoc;
   const oldImage = hinhAnh;
+
   const submitCourseInfo = (values) => {
     console.log(values);
     const { tenKhoaHoc, nguoiTao, moTa, hinhAnh, ngayTao } = values;
     const formData = new FormData();
-    for (let key in values) {
-      if (key !== 'hinhAnh') {
-        formData.append(key, values[key]);
-      } else if (values.hinhAnh === undefined) {
-        formData.append('hinhAnh', oldImage);
-      } else {
-        formData.append('File', hinhAnh);
-      }
-    }
-    const action = updateCourseInfoAction(formData);
-    dispatch(action);
+    formData.append('tenKhoaHoc', tenKhoaHoc);
+    formData.append('File', values.hinhAnh);
+
+    // const action = uploadCourseImageAction(formData);
+    // dispatch(action);
+
+    const actionUpdate = updateCourseAction(values);
+    dispatch(actionUpdate);
   };
 
   const getFile = (e) => {
@@ -129,10 +144,11 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
               maKhoaHoc: maKhoaHoc,
               tenKhoaHoc: tenKhoaHoc,
               ngayTao: moment(ngayTao),
-              nguoiTao: taiKhoan,
+              taiKhoanNguoiTao: taiKhoan,
               moTa: moTa,
-              maDanhMucKhoaHoc: maDanhMucKhoaHoc,
-              tenDanhMucKhoaHoc: tenDanhMucKhoaHoc,
+              biDanh: biDanh,
+              // maDanhMucKhoaHoc: maDanhMucKhoaHoc,
+              maDanhMucKhoaHoc: tenDanhMucKhoaHoc,
             }}
           >
             <Form.Item label="Mã nhóm" name={'maNhom'}>
@@ -144,11 +160,11 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
             </Form.Item>
 
             <Form.Item label="Mã khóa học" name={'maKhoaHoc'}>
-              <Input
-                name="maKhoaHoc"
-                disabled
-                style={{ fontWeight: 'bold' }}
-              />
+              <Input name="maKhoaHoc" />
+            </Form.Item>
+
+            <Form.Item label="Bí danh" name={'biDanh'}>
+              <Input name="biDanh" />
             </Form.Item>
             <Form.Item label="Tên khóa học" name={'tenKhoaHoc'}>
               <Input name="tenKhoaHoc" />
@@ -158,13 +174,13 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
               name={'maDanhMucKhoaHoc'}
             >
               <Select
+                defaultValue={maDanhMucKhoaHoc}
                 options={course.map((item) => {
                   return {
                     label: item.tenDanhMuc,
                     value: item.maDanhMuc,
                   };
                 })}
-                defaultValue={tenDanhMucKhoaHoc}
                 name="maDanhMucKhoaHoc"
               ></Select>
             </Form.Item>
@@ -172,10 +188,19 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
               <ReactQuill />
             </Form.Item>
             <Form.Item label="Ngày tạo" name={'ngayTao'}>
-              <DatePicker name="ngayTao" format={'DD/MM/YYYY'} />
+              <DatePicker format={'DD/MM/YYYY'} />
             </Form.Item>
-            <Form.Item label="Người tạo" name={'nguoiTao'}>
-              <Input name="nguoiTao" />
+            <Form.Item label="Người tạo" name={'taiKhoanNguoiTao'}>
+              <Select
+                options={users
+                  .filter((user) => user.maLoaiNguoiDung === 'GV')
+                  .map((user) => {
+                    return {
+                      label: user.hoTen,
+                      value: user.taiKhoan,
+                    };
+                  })}
+              ></Select>
             </Form.Item>
 
             <Form.Item
@@ -212,3 +237,5 @@ export default function EditCourseDrawer({ visible, closeDrawer }) {
     </div>
   );
 }
+
+export default memo(EditCourseDrawer);

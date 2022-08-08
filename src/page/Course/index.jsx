@@ -21,6 +21,7 @@ import {
   assignCourseAction,
   getAccountInfoAction,
 } from '../../redux/thunk/actions.js';
+import parse from 'html-react-parser';
 
 const { confirm } = Modal;
 
@@ -133,7 +134,7 @@ export default function Course() {
       <div>
         <p className="text-1">
           <span className="font-semibold">Mô tả khóa học:</span>{' '}
-          {item.moTa}
+          <span>{parse(item.moTa)}</span>
         </p>
 
         {renderButton(item.maKhoaHoc)}
